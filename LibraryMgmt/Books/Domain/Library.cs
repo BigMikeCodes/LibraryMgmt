@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using LibraryMgmt.Core;
 
 namespace LibraryMgmt.Books.Domain;
 
@@ -9,15 +10,16 @@ public class Library
 {
     
     // TODO implement get, add, remove
-    // TODO atomic counter for book id
     // TODO Exceptions
     private readonly ConcurrentDictionary<int, Book> _database;
-    private TimeProvider _timeProvider;
+    private readonly TimeProvider _timeProvider;
+    private readonly Sequence _sequence;
     
-    public Library(TimeProvider timeProvider)
+    public Library(TimeProvider timeProvider, Sequence sequence)
     {
         _timeProvider = timeProvider;
         _database = new ConcurrentDictionary<int, Book>();
+        _sequence = sequence;
     }
 
     private int GetCurrentYear() => _timeProvider.GetUtcNow().Year;
@@ -30,14 +32,33 @@ public class Library
             throw new InvalidYearException(year, currentYear);
         }
     }
+
+    private void AssertIsbn(string isbn)
+    {
+        var isbnExists = _database.Values.Any(book => book.Isbn == isbn);
+        if (isbnExists)
+        {
+            throw new IsbnConflictException(isbn);
+        }
+    }
     
     
     public Book AddBook(AddBook addBook)
     {
         AssertYear(addBook.PublishedYear);
-        
-        
-        throw new NotImplementedException();
+        AssertIsbn(addBook.Isbn);
+
+        var book = new Book
+        {
+            Id = _sequence.Next(),
+            Title = addBook.Title,
+            AuthorId = addBook.AuthorId,
+            PublishedYear = addBook.PublishedYear,
+            Isbn = addBook.Isbn
+        };
+
+        _database[book.Id] = book;
+        return book;
     }
 
     public Book RemoveBook(int bookId)

@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddBooksServices();
+builder.Services.AddSingleton(TimeProvider.System);
 
 var app = builder.Build();
 

@@ -1,5 +1,6 @@
 using LibraryMgmt.Books.Domain;
 using LibraryMgmt.Books.Features.AddBook;
+using LibraryMgmt.Core;
 
 namespace LibraryMgmt.Books;
 
@@ -13,7 +14,13 @@ public static class BooksExtensions
 
     public static IServiceCollection AddBooksServices(this IServiceCollection services)
     {
-        services.AddSingleton<Library>(sp => new Library(sp.GetService<TimeProvider>()!));
+        services.AddSingleton<Library>(sp =>
+        {
+            var sequence = new Sequence();
+            var timeProvider = sp.GetService<TimeProvider>()!;
+            
+            return new Library(timeProvider, sequence);
+        });
         return services;
     }
     
