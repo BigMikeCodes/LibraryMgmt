@@ -72,6 +72,17 @@ public class Library
         throw new BookNotFoundException(bookId);
     }
 
+    public Book GetBook(int bookId)
+    {
+        if (_database.TryGetValue(bookId, out var book))
+        {
+            return book;
+        }
+        
+        throw new BookNotFoundException(bookId);
+    }
+    
+    
     public IEnumerable<Book> GetBooks()
     {
         return [];
