@@ -13,7 +13,7 @@ public static class BooksExtensions
 
     public static IServiceCollection AddBooksServices(this IServiceCollection services)
     {
-        services.AddSingleton<Library>(_ => new Library());
+        services.AddSingleton<Library>(sp => new Library(sp.GetService<TimeProvider>()!));
         return services;
     }
     

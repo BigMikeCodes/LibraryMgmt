@@ -5,4 +5,7 @@ namespace LibraryMgmt.Books.Domain;
 /// </summary>
 
 // TODO add validation for the ISBN number, try and structure this like Guid.TyParse
-public record Isbn();
+public record Isbn()
+{
+    
+};
