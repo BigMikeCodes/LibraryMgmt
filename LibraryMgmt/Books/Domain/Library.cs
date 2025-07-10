@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using LibraryMgmt.Books.Features.RemoveBook;
 using LibraryMgmt.Core;
 
 namespace LibraryMgmt.Books.Domain;
@@ -63,7 +64,12 @@ public class Library
 
     public Book RemoveBook(int bookId)
     {
-        throw new NotImplementedException();
+        if (_database.TryRemove(bookId, out var book))
+        {
+            return book;
+        }
+        
+        throw new BookNotFoundException(bookId);
     }
 
     public IEnumerable<Book> GetBooks()

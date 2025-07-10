@@ -38,5 +38,34 @@ public class LibraryTests
             library.AddBook(addBook);
         });
     }
+
+    [Test]
+    public void RemoveBook_Removes_Book_From_Library()
+    {
+        var dateSeed = DateTimeOffset.Parse("2025-01-01T00:00:00Z");
+        var timeProvider = new FakeTimeProvider(dateSeed);
+        var library = new Library(timeProvider, new Sequence());
+
+        var addBook = new AddBook("REST in Practice", 10, 2025, "978-0596805821");
+        var added = library.AddBook(addBook);
+        
+        var removed = library.RemoveBook(added.Id);
+        Assert.That(removed.Id, Is.EqualTo(added.Id));
+        
+        // Should be able to add the same book without issue after its been removed
+        Assert.DoesNotThrow(() => library.AddBook(addBook));
+    }
+    
+    [Test]
+    public void RemoveBook_Throws_BookNotFoundException_When_Book_Doesnt_Exist()
+    {
+        var dateSeed = DateTimeOffset.Parse("2025-01-01T00:00:00Z");
+        var timeProvider = new FakeTimeProvider(dateSeed);
+        
+        // library is empty
+        var library = new Library(timeProvider, new Sequence());
+
+        Assert.Throws<BookNotFoundException>(() => library.RemoveBook(100));
+    }
     
 }
