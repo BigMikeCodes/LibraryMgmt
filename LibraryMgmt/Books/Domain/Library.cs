@@ -80,7 +80,24 @@ public class Library
         // Is this really exceptional? maybe return null & let the caller handle?
         throw new BookNotFoundException(bookId);
     }
-    
+
+    public void UpdateBook(UpdateBook updateBook)
+    {
+        var book = GetBook(updateBook.BookId);
+        AssertYear(updateBook.PublishedYear);
+
+        var otherBooksWithIsbn = _database.Values.Where(b => b.Isbn == updateBook.Isbn && b.Id != book.Id);
+        if (otherBooksWithIsbn.Any())
+        {
+            throw new IsbnConflictException(updateBook.Isbn);
+        }
+        
+        book.Title = updateBook.Title;
+        book.Isbn = updateBook.Isbn;
+        book.PublishedYear = updateBook.PublishedYear;
+        book.AuthorId = updateBook.AuthorId;
+        
+    }
     
     public IEnumerable<Book> GetBooks()
     {

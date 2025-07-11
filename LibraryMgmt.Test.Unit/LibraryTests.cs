@@ -100,4 +100,62 @@ public class LibraryTests
             library.GetBook(sequence.Next());
         });
     }
+
+    [Test]
+    public void UpdateBook_Updates_Correct_Book()
+    {
+        var dateSeed = DateTimeOffset.Parse("2025-01-01T00:00:00Z");
+        var timeProvider = new FakeTimeProvider(dateSeed);
+        
+        var sequence = new Sequence();
+        var library = new Library(timeProvider, sequence);
+        
+        var addRestInPractice = new AddBook("REST in Practice", 10, 2025, "978-0596805821");
+        var addTheBlueBook = new AddBook("Domain-Driven Design: Tackling Complexity in the Heart of Software", 20, 2003, "978-0321125217");
+        
+        var restInPractice = library.AddBook(addRestInPractice);
+        _ = library.AddBook(addTheBlueBook);
+
+        var updatedBook = new UpdateBook(
+            restInPractice.Id, 
+            "Domain-Driven Design Distilled", 
+            30,
+            2016,
+            "978-0134434421");
+
+        library.UpdateBook(updatedBook);
+        
+        var updated = library.GetBook(restInPractice.Id);
+        Assert.Multiple(() =>
+        {
+            Assert.That(updated.Id, Is.EqualTo(restInPractice.Id));
+            Assert.That(updated.Title, Is.EqualTo("Domain-Driven Design Distilled"));
+            Assert.That(updated.AuthorId, Is.EqualTo(30));
+            Assert.That(updated.Isbn, Is.EqualTo("978-0134434421"));
+            Assert.That(updated.PublishedYear, Is.EqualTo(2016));
+        });
+
+    }
+
+    [Test]
+    public void UpdateBook_Throws_BookNotFoundException_When_Book_Doesnt_Exist()
+    {
+        var dateSeed = DateTimeOffset.Parse("2025-01-01T00:00:00Z");
+        var timeProvider = new FakeTimeProvider(dateSeed);
+        
+        var sequence = new Sequence();
+        var library = new Library(timeProvider, sequence);
+
+        var updatedBook = new UpdateBook(
+            100, 
+            "Domain-Driven Design Distilled", 
+            30,
+            2016,
+            "978-0134434421");
+        
+        Assert.Throws<BookNotFoundException>(() =>
+        {
+            library.UpdateBook(updatedBook);
+        });
+    }
 }
