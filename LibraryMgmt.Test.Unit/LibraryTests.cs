@@ -101,6 +101,8 @@ public class LibraryTests
         });
     }
 
+    #region UpdateBook
+
     [Test]
     public void UpdateBook_Updates_Correct_Book()
     {
@@ -158,4 +160,32 @@ public class LibraryTests
             library.UpdateBook(updatedBook);
         });
     }
+    
+    [Test]
+    public void UpdateBook_Throws_IsbnConflictConflictException_When_Updating_To_Existing_Isbn()
+    {
+        var dateSeed = DateTimeOffset.Parse("2025-01-01T00:00:00Z");
+        var timeProvider = new FakeTimeProvider(dateSeed);
+        
+        var sequence = new Sequence();
+        var library = new Library(timeProvider, sequence);
+        
+        var addRestInPractice = new AddBook("REST in Practice", 10, 2025, "978-0596805821");
+        var addTheBlueBook = new AddBook("Domain-Driven Design: Tackling Complexity in the Heart of Software", 20, 2003, "978-0321125217");
+        
+        var restInPractice = library.AddBook(addRestInPractice);
+        _ = library.AddBook(addTheBlueBook);
+
+        var updatedBook = new UpdateBook(
+            restInPractice.Id, 
+            "Domain-Driven Design Distilled", 
+            30,
+            2016,
+            "978-0321125217");
+       
+        Assert.Throws<IsbnConflictException>(() => library.UpdateBook(updatedBook));
+    }
+    
+    #endregion
+
 }

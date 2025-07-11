@@ -41,7 +41,17 @@ public class Library
             throw new IsbnConflictException(isbn);
         }
     }
-    
+
+    /// <summary>
+    /// Determine if the library contains any books with the provided ISBN but not with the provided id
+    /// </summary>
+    /// <param name="isbn">ISBN to check</param>
+    /// <param name="bookId">BookId to exclude</param>
+    /// <returns></returns>
+    private bool HasOtherBookWithIsbn(string isbn, int bookId)
+    {
+        return _database.Values.Any(b => b.Isbn == isbn && b.Id != bookId);
+    }
     
     public Book AddBook(AddBook addBook)
     {
@@ -86,8 +96,7 @@ public class Library
         var book = GetBook(updateBook.BookId);
         AssertYear(updateBook.PublishedYear);
 
-        var otherBooksWithIsbn = _database.Values.Where(b => b.Isbn == updateBook.Isbn && b.Id != book.Id);
-        if (otherBooksWithIsbn.Any())
+        if (HasOtherBookWithIsbn(updateBook.Isbn, updateBook.BookId))
         {
             throw new IsbnConflictException(updateBook.Isbn);
         }
