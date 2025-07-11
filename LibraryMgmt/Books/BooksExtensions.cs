@@ -1,5 +1,6 @@
 using LibraryMgmt.Books.Domain;
 using LibraryMgmt.Books.Features.AddBook;
+using LibraryMgmt.Books.Features.GetBook;
 using LibraryMgmt.Core;
 
 namespace LibraryMgmt.Books;
@@ -8,8 +9,9 @@ public static class BooksExtensions
 {
     public static IEndpointRouteBuilder AddBooksEndpoints(this IEndpointRouteBuilder routes)
     {
-        routes.MapCreateBookEndpoint();
-        return routes;
+        return routes
+            .MapCreateBookEndpoint()
+            .MapGetBook();
     }
 
     public static IServiceCollection AddBooksServices(this IServiceCollection services)

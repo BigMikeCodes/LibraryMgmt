@@ -1,4 +1,5 @@
 using LibraryMgmt.Books.Domain;
+using LibraryMgmt.Books.Features.GetBook;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryMgmt.Books.Features.AddBook;
@@ -21,10 +22,8 @@ public static class AddBookEndpoint
         [FromBody] AddBookRequest request,
         [FromServices] Library library)
     {
-        // TODO change to a http 201
         var command = Map(request);
-        var bookId = library.AddBook(command);
-        
-        return Results.Ok(bookId);   
+        var book = library.AddBook(command);
+        return TypedResults.CreatedAtRoute(GetBookEndpoint.Name, new { bookId = book.Id });   
     }
 }

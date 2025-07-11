@@ -1,5 +1,4 @@
 using System.Collections.Concurrent;
-using LibraryMgmt.Books.Features.RemoveBook;
 using LibraryMgmt.Core;
 
 namespace LibraryMgmt.Books.Domain;
@@ -78,7 +77,7 @@ public class Library
         {
             return book;
         }
-        
+        // Is this really exceptional? maybe return null & let the caller handle?
         throw new BookNotFoundException(bookId);
     }
     
