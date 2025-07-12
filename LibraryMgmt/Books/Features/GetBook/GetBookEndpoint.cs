@@ -11,7 +11,7 @@ public static class GetBookEndpoint
 {
     public const string Name = "GetBook";
     
-    public static IEndpointRouteBuilder MapGetBook(this IEndpointRouteBuilder routes)
+    public static IEndpointRouteBuilder MapGetBookEndpoint(this IEndpointRouteBuilder routes)
     {
         routes
             .MapGet("/api/books/{bookId:int}", GetBook)

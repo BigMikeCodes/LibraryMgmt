@@ -14,7 +14,7 @@ public static class BooksExtensions
     {
         return routes
             .MapCreateBookEndpoint()
-            .MapGetBook()
+            .MapGetBookEndpoint()
             .MapDeleteBookEndpoint()
             .MapGetBooksEndpoint()
             .MapUpdateBookEndpoint();
