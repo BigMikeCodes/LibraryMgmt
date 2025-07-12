@@ -1,5 +1,6 @@
 using FluentValidation;
 using LibraryMgmt.Books;
+using LibraryMgmt.Core.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddBooksServices();
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddProblemDetails();
+
+builder.Services
+    .AddExceptionHandler<BusinessExceptionHandler>()
+    .AddExceptionHandler<UnhandledExceptionHandler>();
 
 var app = builder.Build();
 
@@ -19,7 +25,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.AddBooksEndpoints();
-
+app.UseExceptionHandler();
 app.Run();
