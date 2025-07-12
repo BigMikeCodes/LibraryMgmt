@@ -1,4 +1,5 @@
 using LibraryMgmt.Books.Domain;
+using LibraryMgmt.Core.Filters;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,7 +9,11 @@ public static class UpdateBookEndpoint
 {
     public static IEndpointRouteBuilder MapUpdateBookEndpoint(this IEndpointRouteBuilder routes)
     {
-        routes.MapPut("/api/books/{bookId:int}", UpdateBook);
+        routes
+            .MapPut("/api/books/{bookId:int}", UpdateBook)
+            .WithFluentValidation<UpdateBookRequest>()
+            .WithTags("Books")
+            .WithDescription("Update an existing book within the library.");
         return routes;
     }
 
