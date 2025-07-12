@@ -8,7 +8,10 @@ public static class RemoveBookEndpoint
 {
     public static IEndpointRouteBuilder MapDeleteBookEndpoint(this IEndpointRouteBuilder routes)
     {
-        routes.MapDelete("/api/books/{bookId:int}", DeleteBook);
+        routes
+            .MapDelete("/api/books/{bookId:int}", DeleteBook)
+            .WithDescription("Delete an existing book within the library.")
+            .WithTags("Books");
         return routes;
     }
     
