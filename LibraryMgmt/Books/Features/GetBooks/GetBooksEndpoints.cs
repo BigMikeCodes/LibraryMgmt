@@ -24,8 +24,9 @@ public static class GetBooksEndpoints
         validator.ValidateAndThrow(request);
 
         var books = library.GetBooks();
-        var page = books.Page(request.PageSize, request.PageNumber);
+        books.Sort(new BookComparer(request.SortAscending));
         
+        var page = books.Page(request.PageSize, request.PageNumber);
         return TypedResults.Ok(page);
     }
 }

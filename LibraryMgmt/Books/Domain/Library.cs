@@ -9,8 +9,6 @@ namespace LibraryMgmt.Books.Domain;
 public class Library
 {
     
-    // TODO implement get, add, remove
-    // TODO Exceptions
     private readonly ConcurrentDictionary<int, Book> _database;
     private readonly TimeProvider _timeProvider;
     private readonly Sequence _sequence;
@@ -108,8 +106,8 @@ public class Library
         
     }
     
-    public IEnumerable<Book> GetBooks()
+    public List<Book> GetBooks()
     {
-        return _database.Values;
+        return _database.Values.ToList();
     }
 }
