@@ -33,7 +33,23 @@ public class PageIEnumerableExtensionTests
         });
 
     }
-    
-    
+
+    [Test]
+    public void Page_Gracefully_Handles_Out_Of_Range()
+    {
+        var data = Enumerable.Range(1, 10);
+        
+        var page = data.Page(10, 10);
+        
+        Assert.Multiple(() =>
+        {
+            Assert.That(page.HasMorePages, Is.False);
+            Assert.That(page.Data, Is.Empty);
+            Assert.That(page.TotalItems, Is.EqualTo(data.Count()));
+            Assert.That(page.TotalPages, Is.EqualTo(1));
+            Assert.That(page.CurrentPage, Is.EqualTo(10));
+        });
+        
+    }
     
 }
