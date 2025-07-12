@@ -1,5 +1,6 @@
 using FluentValidation;
 using LibraryMgmt.Books.Domain;
+using LibraryMgmt.Core.Filters;
 using LibraryMgmt.Core.Paging;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +12,12 @@ public static class GetBooksEndpoints
 
     public static IEndpointRouteBuilder MapGetBooksEndpoint(this IEndpointRouteBuilder routes)
     {
-        routes.MapGet("/api/books", GetBooks);
+        routes
+            .MapGet("/api/books", GetBooks)
+            .WithFluentValidation<GetBooksParameters>()
+            .WithDescription("Returns a collection of books from the library.")
+            .WithTags("Books");
+        
         return routes;
     }
 
