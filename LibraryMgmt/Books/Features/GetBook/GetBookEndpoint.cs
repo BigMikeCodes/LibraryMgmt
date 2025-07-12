@@ -15,7 +15,9 @@ public static class GetBookEndpoint
     {
         routes
             .MapGet("/api/books/{bookId:int}", GetBook)
-            .WithName(Name);
+            .WithName(Name)
+            .WithTags("Books")
+            .WithDescription("Get a book by id from the library.");
         return routes;
     }
 
