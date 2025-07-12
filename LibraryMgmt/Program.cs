@@ -1,3 +1,4 @@
+using FluentValidation;
 using LibraryMgmt.Books;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +7,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddBooksServices();
 builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 var app = builder.Build();
 

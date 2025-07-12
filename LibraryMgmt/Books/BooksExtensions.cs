@@ -1,6 +1,7 @@
 using LibraryMgmt.Books.Domain;
 using LibraryMgmt.Books.Features.AddBook;
 using LibraryMgmt.Books.Features.GetBook;
+using LibraryMgmt.Books.Features.GetBooks;
 using LibraryMgmt.Books.Features.RemoveBook;
 using LibraryMgmt.Core;
 
@@ -13,7 +14,8 @@ public static class BooksExtensions
         return routes
             .MapCreateBookEndpoint()
             .MapGetBook()
-            .MapDeleteBookEndpoint();
+            .MapDeleteBookEndpoint()
+            .MapGetBooksEndpoint();
     }
 
     public static IServiceCollection AddBooksServices(this IServiceCollection services)
