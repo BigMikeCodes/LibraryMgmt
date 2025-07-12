@@ -1,5 +1,8 @@
 using FluentValidation;
+using LibraryMgmt.Books.Domain;
+using LibraryMgmt.Core.Paging;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryMgmt.Books.Features.GetBooks;
 
@@ -12,10 +15,17 @@ public static class GetBooksEndpoints
         return routes;
     }
 
-    private static Ok<string> GetBooks(
+    private static Ok<Page<Book>> GetBooks(
         IValidator<GetBooksParameters> validator,
-        [AsParameters] GetBooksParameters pagedRequest)
+        [AsParameters] GetBooksParameters request,
+        [FromServices] Library library)
     {
-        return TypedResults.Ok("ok");
+        //TODO convert this to a RFC ProblemDetails, potentially use a filter?
+        validator.ValidateAndThrow(request);
+
+        var books = library.GetBooks();
+        var page = books.Page(request.PageSize, request.PageNumber);
+        
+        return TypedResults.Ok(page);
     }
 }

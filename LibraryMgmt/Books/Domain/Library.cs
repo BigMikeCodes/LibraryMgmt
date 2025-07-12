@@ -110,6 +110,6 @@ public class Library
     
     public IEnumerable<Book> GetBooks()
     {
-        return [];
+        return _database.Values;
     }
 }
