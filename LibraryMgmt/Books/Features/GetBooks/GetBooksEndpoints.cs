@@ -15,7 +15,7 @@ public static class GetBooksEndpoints
         return routes;
     }
 
-    private static Ok<Page<Book>> GetBooks(
+    private static Ok<Page<BookResource>> GetBooks(
         IValidator<GetBooksParameters> validator,
         [AsParameters] GetBooksParameters request,
         [FromServices] Library library)
@@ -26,7 +26,7 @@ public static class GetBooksEndpoints
         var books = library.GetBooks();
         books.Sort(new BookComparer(request.SortAscending));
         
-        var page = books.Page(request.PageSize, request.PageNumber);
+        var page = books.PageAndMap(request.PageSize, request.PageNumber, book => book.ToResource());
         return TypedResults.Ok(page);
     }
 }
