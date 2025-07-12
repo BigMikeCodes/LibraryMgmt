@@ -4,7 +4,7 @@ using LibraryMgmt.Books.Features.GetBook;
 using LibraryMgmt.Books.Features.GetBooks;
 using LibraryMgmt.Books.Features.RemoveBook;
 using LibraryMgmt.Books.Features.UpdateBook;
-using LibraryMgmt.Core;
+using LibraryMgmt.Core.Sequences;
 
 namespace LibraryMgmt.Books;
 
@@ -24,7 +24,7 @@ public static class BooksExtensions
     {
         services.AddSingleton<Library>(sp =>
         {
-            var sequence = new Sequence();
+            var sequence = new AtomicIntSequence();
             var timeProvider = sp.GetService<TimeProvider>()!;
             
             return new Library(timeProvider, sequence);

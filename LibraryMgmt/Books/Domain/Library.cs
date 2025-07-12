@@ -1,5 +1,5 @@
 using System.Collections.Concurrent;
-using LibraryMgmt.Core;
+using LibraryMgmt.Core.Sequences;
 
 namespace LibraryMgmt.Books.Domain;
 
@@ -11,9 +11,9 @@ public class Library
     
     private readonly ConcurrentDictionary<int, Book> _database;
     private readonly TimeProvider _timeProvider;
-    private readonly Sequence _sequence;
+    private readonly ISequence<int> _sequence;
     
-    public Library(TimeProvider timeProvider, Sequence sequence)
+    public Library(TimeProvider timeProvider, ISequence<int> sequence)
     {
         _timeProvider = timeProvider;
         _database = new ConcurrentDictionary<int, Book>();

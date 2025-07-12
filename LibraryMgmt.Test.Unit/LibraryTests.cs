@@ -1,5 +1,6 @@
 using LibraryMgmt.Books.Domain;
 using LibraryMgmt.Core;
+using LibraryMgmt.Core.Sequences;
 using Microsoft.Extensions.Time.Testing;
 
 namespace LibraryMgmt.Test.Unit;
@@ -13,7 +14,7 @@ public class LibraryTests
     {
         var dateSeed = DateTimeOffset.Parse("2025-01-01T00:00:00Z");
         var timeProvider = new FakeTimeProvider(dateSeed);
-        var library = new Library(timeProvider, new Sequence());
+        var library = new Library(timeProvider, new AtomicIntSequence());
         
         var addBook = new AddBook("REST in Practice", 10, 2026, "978-0596805821");
         
@@ -28,7 +29,7 @@ public class LibraryTests
     {
         var dateSeed = DateTimeOffset.Parse("2025-01-01T00:00:00Z");
         var timeProvider = new FakeTimeProvider(dateSeed);
-        var library = new Library(timeProvider, new Sequence());
+        var library = new Library(timeProvider, new AtomicIntSequence());
 
         var addBook = new AddBook("REST in Practice", 10, 2025, "978-0596805821");
         library.AddBook(addBook);
@@ -44,7 +45,7 @@ public class LibraryTests
     {
         var dateSeed = DateTimeOffset.Parse("2025-01-01T00:00:00Z");
         var timeProvider = new FakeTimeProvider(dateSeed);
-        var library = new Library(timeProvider, new Sequence());
+        var library = new Library(timeProvider, new AtomicIntSequence());
 
         var addBook = new AddBook("REST in Practice", 10, 2025, "978-0596805821");
         var added = library.AddBook(addBook);
@@ -63,7 +64,7 @@ public class LibraryTests
         var timeProvider = new FakeTimeProvider(dateSeed);
         
         // library is empty
-        var library = new Library(timeProvider, new Sequence());
+        var library = new Library(timeProvider, new AtomicIntSequence());
 
         Assert.Throws<BookNotFoundException>(() => library.RemoveBook(100));
     }
@@ -74,7 +75,7 @@ public class LibraryTests
         var dateSeed = DateTimeOffset.Parse("2025-01-01T00:00:00Z");
         var timeProvider = new FakeTimeProvider(dateSeed);
         
-        var library = new Library(timeProvider, new Sequence());
+        var library = new Library(timeProvider, new AtomicIntSequence());
         var addBook = new AddBook("REST in Practice", 10, 2025, "978-0596805821");
         
         var added = library.AddBook(addBook);
@@ -89,7 +90,7 @@ public class LibraryTests
         var dateSeed = DateTimeOffset.Parse("2025-01-01T00:00:00Z");
         var timeProvider = new FakeTimeProvider(dateSeed);
         
-        var sequence = new Sequence();
+        var sequence = new AtomicIntSequence();
         var library = new Library(timeProvider, sequence);
         
         var addBook = new AddBook("REST in Practice", 10, 2025, "978-0596805821");
@@ -109,7 +110,7 @@ public class LibraryTests
         var dateSeed = DateTimeOffset.Parse("2025-01-01T00:00:00Z");
         var timeProvider = new FakeTimeProvider(dateSeed);
         
-        var sequence = new Sequence();
+        var sequence = new AtomicIntSequence();
         var library = new Library(timeProvider, sequence);
         
         var addRestInPractice = new AddBook("REST in Practice", 10, 2025, "978-0596805821");
@@ -145,7 +146,7 @@ public class LibraryTests
         var dateSeed = DateTimeOffset.Parse("2025-01-01T00:00:00Z");
         var timeProvider = new FakeTimeProvider(dateSeed);
         
-        var sequence = new Sequence();
+        var sequence = new AtomicIntSequence();
         var library = new Library(timeProvider, sequence);
 
         var updatedBook = new UpdateBook(
@@ -167,7 +168,7 @@ public class LibraryTests
         var dateSeed = DateTimeOffset.Parse("2025-01-01T00:00:00Z");
         var timeProvider = new FakeTimeProvider(dateSeed);
         
-        var sequence = new Sequence();
+        var sequence = new AtomicIntSequence();
         var library = new Library(timeProvider, sequence);
         
         var addRestInPractice = new AddBook("REST in Practice", 10, 2025, "978-0596805821");

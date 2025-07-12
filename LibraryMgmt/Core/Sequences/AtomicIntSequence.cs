@@ -1,6 +1,6 @@
-namespace LibraryMgmt.Core;
+namespace LibraryMgmt.Core.Sequences;
 
-public class Sequence
+public class AtomicIntSequence: ISequence<int>
 {
     private int _position = 0;
     
