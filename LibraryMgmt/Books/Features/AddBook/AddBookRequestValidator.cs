@@ -2,14 +2,13 @@ using FluentValidation;
 
 namespace LibraryMgmt.Books.Features.AddBook;
 
-public class AddBookValidator: AbstractValidator<AddBookRequest>
+public class AddBookRequestValidator: AbstractValidator<AddBookRequest>
 {
-    public AddBookValidator()
+    public AddBookRequestValidator()
     {
         RuleFor(x => x.Title).NotEmpty();
-        RuleFor(x => x.AuthorId).NotEmpty();
-        RuleFor(x => x.PublishedYear).NotEmpty();
-        
+        RuleFor(x => x.AuthorId).NotNull();
+        RuleFor(x => x.PublishedYear).NotNull();
         // TODO Regex for isbn number?
         RuleFor(x => x.Isbn).NotEmpty();
     }

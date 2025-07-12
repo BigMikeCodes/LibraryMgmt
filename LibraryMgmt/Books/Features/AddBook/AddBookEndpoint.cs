@@ -1,5 +1,6 @@
 using LibraryMgmt.Books.Domain;
 using LibraryMgmt.Books.Features.GetBook;
+using LibraryMgmt.Core.Filters;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryMgmt.Books.Features.AddBook;
@@ -8,7 +9,11 @@ public static class AddBookEndpoint
 {
     public static IEndpointRouteBuilder MapCreateBookEndpoint(this IEndpointRouteBuilder routes)
     {
-        routes.MapPost("/api/books", CreateBook);
+        routes
+            .MapPost("/api/books", CreateBook)
+            .WithFluentValidation<AddBookRequest>()
+            .WithTags("Books")
+            .WithDescription("Add a book to the library.");
         return routes;
     }
 

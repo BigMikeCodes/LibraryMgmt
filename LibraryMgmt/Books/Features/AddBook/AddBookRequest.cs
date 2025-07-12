@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace LibraryMgmt.Books.Features.AddBook;
 
 public class AddBookRequest
