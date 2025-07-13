@@ -1,3 +1,4 @@
+using LibraryMgmt.Books;
 using LibraryMgmt.Books.Features.AddBook;
 using LibraryMgmt.Books.Features.UpdateBook;
 
@@ -31,7 +32,7 @@ public static class BookHttpClientExtensions
     /// <returns></returns>
     public static async Task<HttpResponseMessage> GetBooks(this HttpClient client, int pageSize, int pageNumber, bool sortAscending)
     {
-        var uri = $"{ApiBasePath}/PageNumber={pageNumber}&SortAscending={sortAscending}&PageSize={pageSize}";
+        var uri = $"{ApiBasePath}?PageNumber={pageNumber}&SortAscending={sortAscending}&PageSize={pageSize}";
         return await client.GetAsync(uri);
     }
     
