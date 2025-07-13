@@ -3,8 +3,9 @@ using LibraryMgmt.Books;
 using LibraryMgmt.Books.Features.AddBook;
 using Microsoft.AspNetCore.Mvc.Testing;
 
-namespace LibraryMgmt.Test.Integration;
+namespace LibraryMgmt.Test.Integration.GetBook;
 
+[TestFixture]
 public class GetBookTests
 {
     private WebApplicationFactory<Program> _factory;
