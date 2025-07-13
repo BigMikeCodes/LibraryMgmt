@@ -28,3 +28,6 @@ app.UseHttpsRedirection();
 app.AddBooksEndpoints();
 app.UseExceptionHandler();
 app.Run();
+
+// Need for Integration testing via LibraryMgmt.Test.Integration
+public partial class Program { }
