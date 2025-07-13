@@ -68,7 +68,7 @@ public class AddBookTests
     }
     
     [Test]
-    public async Task Invalid_Year_Returns_Bad_Request()
+    public async Task Invalid_Year_Returns_Bad_Request_400()
     {
         using var client = _factory.CreateClient();
         var createBook = new AddBookRequest
