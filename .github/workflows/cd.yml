@@ -26,3 +26,15 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+      - name: build-deploy-app
+        uses: azure/container-apps-deploy-action@v1
+        with:
+          resourceGroup: librarymgmt
+          acrName: librarymgmt
+          appSourcePath: ${{ github.workspace }}
+          dockerfilePath: LibraryMgmt/Dockerfile
+          imageToBuild: librarymgmt.azurecr.io/api:${{ github.sha }}
+          containerAppName: library-mgmt-rest-api
+
+      
