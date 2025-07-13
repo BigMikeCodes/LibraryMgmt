@@ -1,0 +1,22 @@
+name: CD
+on: [workflow_dispatch]
+jobs:
+  Test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: setup-dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.x
+      
+      - name: restore
+        run: dotnet restore
+
+      - name: unit-test
+        uses: dotnet test ./LibraryMgmt.Test.Unit/LibraryMgmt.Test.Unit.csproj
+
+      - name: integration-test
+        uses: dotnet test ./LibraryMgmt.Test.Integration/LibraryMgmt.Test.Integration.csproj
