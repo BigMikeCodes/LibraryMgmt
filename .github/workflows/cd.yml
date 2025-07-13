@@ -1,7 +1,8 @@
 name: CD
 on: [workflow_dispatch]
 jobs:
-  Test:
+
+  Test-Deploy:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -20,3 +21,8 @@ jobs:
 
       - name: integration-test
         run: dotnet test ./LibraryMgmt.Test.Integration/LibraryMgmt.Test.Integration.csproj
+      
+      - name: azure-login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
