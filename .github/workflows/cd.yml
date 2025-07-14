@@ -32,9 +32,11 @@ jobs:
         with:
           resourceGroup: librarymgmt
           acrName: librarymgmt
+          location: UK South
           appSourcePath: ${{ github.workspace }}
           dockerfilePath: LibraryMgmt/Dockerfile
           imageToBuild: librarymgmt.azurecr.io/api:${{ github.sha }}
-          containerAppName: library-mgmt-rest-api
+          containerAppName: librarymgmt-api
+          containerAppEnvironment: managedEnvironment-DefaultResource-9b14
 
       
