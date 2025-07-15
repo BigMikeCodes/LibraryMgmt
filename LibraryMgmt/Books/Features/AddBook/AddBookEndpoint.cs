@@ -1,6 +1,7 @@
 using LibraryMgmt.Books.Domain;
 using LibraryMgmt.Books.Features.GetBook;
 using LibraryMgmt.Core.Filters;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryMgmt.Books.Features.AddBook;
@@ -23,7 +24,7 @@ public static class AddBookEndpoint
             request.PublishedYear!.Value,
             request.Isbn!);
     
-    private static IResult CreateBook(
+    private static CreatedAtRoute CreateBook(
         [FromBody] AddBookRequest request,
         [FromServices] Library library)
     {
