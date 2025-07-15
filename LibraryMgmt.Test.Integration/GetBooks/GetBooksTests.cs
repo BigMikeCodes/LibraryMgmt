@@ -29,8 +29,8 @@ public class GetBooksTests
         const int pageSize = 10;
         const int pageNumber = 1;
         
-        var client  = _factory.CreateClient();
-        var response = await client.GetBooks(pageSize, pageNumber, true);
+        using var client  = _factory.CreateClient();
+        using var response = await client.GetBooks(pageSize, pageNumber, true);
         var page = await response.Content.ReadFromJsonAsync<Page<BookResource>>();
         
         Assert.Multiple(() =>
@@ -51,8 +51,8 @@ public class GetBooksTests
     [TestCase(1, -1)]
     public async Task Invalid_Params_Cause_400(int pageSize, int pageNumber)
     {
-        var client  = _factory.CreateClient();
-        var response = await client.GetBooks(pageSize, pageNumber, true);
+        using var client  = _factory.CreateClient();
+        using var response = await client.GetBooks(pageSize, pageNumber, true);
         
         Assert.Multiple(() =>
         {
@@ -64,7 +64,7 @@ public class GetBooksTests
     [Test]
     public async Task Books_Sorted_As_Expected_200()
     {
-        var client  = _factory.CreateClient();
+        using var client  = _factory.CreateClient();
 
         List<AddBookRequest> booksToAdd = [
             new()
@@ -102,8 +102,8 @@ public class GetBooksTests
             await client.CreateBook(request);
         }
         
-        var responseAsc = await client.GetBooks(10, 1, true);
-        var responseDesc = await client.GetBooks(10, 1, false);
+        using var responseAsc = await client.GetBooks(10, 1, true);
+        using var responseDesc = await client.GetBooks(10, 1, false);
 
         var ascPage = await responseAsc.Content.ReadFromJsonAsync<Page<BookResource>>();
         var descPage = await responseDesc.Content.ReadFromJsonAsync<Page<BookResource>>();
@@ -128,5 +128,19 @@ public class GetBooksTests
             
         });
     }
-    
+
+    [Test]
+    public async Task Default_Parameters_Returns_200()
+    {
+        using var client = _factory.CreateClient();
+        using var response = await client.GetBooks();
+        var page = await response.Content.ReadFromJsonAsync<Page<BookResource>>();
+        
+        Assert.Multiple(() =>
+        {
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
+            Assert.That(page!.PageSize, Is.EqualTo(10));
+            Assert.That(page.CurrentPage, Is.EqualTo(1));
+        });
+    }
 }

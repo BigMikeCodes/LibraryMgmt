@@ -30,9 +30,13 @@ public static class GetBooksEndpoints
         validator.ValidateAndThrow(request);
 
         var books = library.GetBooks();
-        books.Sort(new BookComparer(request.SortAscending));
+        books.Sort(new BookComparer(request.SortAscendingOrDefault));
         
-        var page = books.PageAndMap(request.PageSize, request.PageNumber, book => book.ToResource());
+        var page = books.PageAndMap(
+            request.PageSizeOrDefault,
+            request.PageNumberOrDefault,
+            book => book.ToResource());
+        
         return TypedResults.Ok(page);
     }
 }

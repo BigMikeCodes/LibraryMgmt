@@ -35,6 +35,15 @@ public static class BookHttpClientExtensions
         var uri = $"{ApiBasePath}?PageNumber={pageNumber}&SortAscending={sortAscending}&PageSize={pageSize}";
         return await client.GetAsync(uri);
     }
+
+    /// <summary>
+    /// Get books without passing any parameters
+    /// </summary>
+    /// <returns></returns>
+    public static async Task<HttpResponseMessage> GetBooks(this HttpClient client)
+    {
+        return await client.GetAsync(ApiBasePath);
+    }
     
     /// <summary>
     /// Create a new book
