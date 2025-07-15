@@ -21,10 +21,10 @@ public static class UpdateBookEndpoint
     {
         return new Domain.UpdateBook(
             bookId,
-            request.Title,
-            request.AuthorId,
-            request.PublishedYear,
-            request.Isbn);
+            request.Title!,
+            request.AuthorId!.Value,
+            request.PublishedYear!.Value,
+            request.Isbn!);
     }
     
     private static NoContent UpdateBook(

@@ -18,10 +18,10 @@ public static class AddBookEndpoint
     }
 
     private static Domain.AddBook Map(AddBookRequest request) => 
-        new(request.Title,
-            request.AuthorId,
-            request.PublishedYear,
-            request.Isbn);
+        new(request.Title!,
+            request.AuthorId!.Value,
+            request.PublishedYear!.Value,
+            request.Isbn!);
     
     private static IResult CreateBook(
         [FromBody] AddBookRequest request,

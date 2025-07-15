@@ -2,6 +2,7 @@ using System.Net;
 using LibraryMgmt.Books;
 using LibraryMgmt.Books.Features.AddBook;
 using LibraryMgmt.Books.Features.UpdateBook;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace LibraryMgmt.Test.Integration.UpdateBook;
@@ -141,13 +142,42 @@ public class UpdateBookTests
             
             Assert.That(bookResource, Is.Not.Null);
             
-            Assert.That(bookResource.Title, Is.EqualTo(updateBook.Title));
+            Assert.That(bookResource!.Title, Is.EqualTo(updateBook.Title));
             Assert.That(bookResource.AuthorId, Is.EqualTo(updateBook.AuthorId));
             Assert.That(bookResource.Isbn, Is.EqualTo(updateBook.Isbn));
             Assert.That(bookResource.PublishedYear, Is.EqualTo(updateBook.PublishedYear));
         });
         
         
+    }
+
+    [Test]
+    public async Task Invalid_Request_Returns_Bad_Request_400()
+    {
+        var request = new UpdateBookRequest
+        {
+            AuthorId = null,
+            Isbn = null,
+            PublishedYear = null,
+            Title = null
+        };
+        
+        using var client = _factory.CreateClient();
+        using var response = await client.UpdateBook(request, 10);
+        
+        var problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+        var errors = problemDetails!.GetErrors();
+        
+        Assert.Multiple(() =>
+        {
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            
+            // Expect an error for each field in the request
+            Assert.That(errors, Contains.Key(nameof(UpdateBookRequest.AuthorId)));
+            Assert.That(errors, Contains.Key(nameof(UpdateBookRequest.Title)));
+            Assert.That(errors, Contains.Key(nameof(UpdateBookRequest.Isbn)));
+            Assert.That(errors, Contains.Key(nameof(UpdateBookRequest.PublishedYear)));
+        });
     }
     
 }

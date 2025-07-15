@@ -1,5 +1,6 @@
 using System.Net;
 using LibraryMgmt.Books.Features.AddBook;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace LibraryMgmt.Test.Integration.AddBook;
@@ -85,5 +86,37 @@ public class AddBookTests
         {
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
         });
+    }
+
+    [Test]
+    public async Task Invalid_Request_Returns_Bad_Request_400()
+    {
+        var request = new AddBookRequest
+        {
+            AuthorId = null,
+            Isbn = null,
+            PublishedYear = null,
+            Title = null
+        };
+        
+        using var client = _factory.CreateClient();
+        using var response = await client.CreateBook(request);
+        
+        var problemDetails = await response.Content.ReadFromJsonAsync<ProblemDetails>();
+        var errors = problemDetails!.GetErrors();
+        
+        Assert.Multiple(() =>
+        {
+            Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.BadRequest));
+            
+            // Expect an error for each field in the request
+            Assert.That(errors, Contains.Key(nameof(AddBookRequest.AuthorId)));
+            Assert.That(errors, Contains.Key(nameof(AddBookRequest.Title)));
+            Assert.That(errors, Contains.Key(nameof(AddBookRequest.Isbn)));
+            Assert.That(errors, Contains.Key(nameof(AddBookRequest.PublishedYear)));
+
+        });
+        
+
     }
 }
