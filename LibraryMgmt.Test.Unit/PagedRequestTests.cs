@@ -9,7 +9,7 @@ public class PagedRequestTests
     [Test]
     public void Defaults_Set_As_Expected()
     {
-        var PagedRequest = new PagedRequest
+        var pagedRequest = new PagedRequest
         {
             PageSize = null,
             PageNumber = null,
@@ -18,9 +18,9 @@ public class PagedRequestTests
         
         Assert.Multiple(() =>
         {
-            Assert.That(PagedRequest.SortAscendingOrDefault, Is.True);
-            Assert.That(PagedRequest.PageSizeOrDefault, Is.EqualTo(10));
-            Assert.That(PagedRequest.PageNumberOrDefault, Is.EqualTo(1));
+            Assert.That(pagedRequest.SortAscendingOrDefault, Is.True);
+            Assert.That(pagedRequest.PageSizeOrDefault, Is.EqualTo(10));
+            Assert.That(pagedRequest.PageNumberOrDefault, Is.EqualTo(1));
         });
     }
     
