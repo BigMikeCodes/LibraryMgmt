@@ -3,7 +3,10 @@ namespace LibraryMgmt.Core.Paging;
 public class Page<T>
 {
     public List<T> Data { get; init; } = [];
-    public int CurrentPage { get; init; }
+    public required int CurrentPage { get; init; }
+    public required int TotalItems { get; init; }
+    public required int PageSize { get; init; }
+    
     public int TotalPages
     {
         get
@@ -17,8 +20,6 @@ public class Page<T>
             return numPages;
         }
     }
-
-    public int TotalItems { get; init; }
-    public int PageSize { get; init; }
+    
     public bool HasMorePages => CurrentPage < TotalPages;
 }
